@@ -51,7 +51,6 @@ exports.signIn = asyncHandler(async (req, res, next) => {
     }
     res.status(200).json({ message: "Logged in successfully", result })
 })
-
 // Sign Out
 exports.signOut = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
@@ -66,7 +65,6 @@ exports.signOut = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ message: "Logged out successfully" });
 });
-
 // Send OTP
 exports.sendOTP = asyncHandler(async (req, res, next) => {
 
@@ -92,7 +90,6 @@ exports.sendOTP = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ message: "OTP sent successfully" })
 })
-
 // Verify OTP
 exports.verifyOTP = asyncHandler(async (req, res, next) => {
     const { username, otp } = req.body
@@ -123,8 +120,7 @@ exports.verifyOTP = asyncHandler(async (req, res, next) => {
     res.status(200).json({ message: "OTP verified successfully" })
 
 })
-
-
+// Forgot Password
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
     const { email } = req.body
 
@@ -153,7 +149,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ message: "Password reset email sent successfully" });
 })
-
 // Reset Password
 exports.resetPassword = asyncHandler(async (req, res, next) => {
     const { password, confirmPassword, token } = req.body
