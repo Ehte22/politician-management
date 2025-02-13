@@ -8,7 +8,6 @@ exports.registerRules = {
     password: { required: true, min: 8, max: 16 },
     role: { required: true },
     profile: { required: false },
-    clinicId: { required: true },
 }
 
 exports.sendOTPRules = {

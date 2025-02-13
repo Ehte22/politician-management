@@ -58,7 +58,7 @@ exports.getUserById = asyncHandler(async (req, res, next) => {
 
 // Create User
 exports.createUser = asyncHandler(async (req, res, next) => {
-    const { clinicId, firstName, lastName, email, phone, role, password } = req.body
+    const { firstName, lastName, email, phone, role, password } = req.body
 
     const user = await User.findOne({ $or: [{ email }, { phone }] })
 
@@ -77,16 +77,12 @@ exports.createUser = asyncHandler(async (req, res, next) => {
         profile = secure_url
     }
 
-    if (role === "Admin" || role === "Booth Manager" || role === "Booth Worker") {
+    if (role === "Office Admin" || role === "Booth Manager" || role === "Booth Worker") {
         const generatedPassword = generatePassword(12)
 
         const x = req.user
 
-        let data
-
-        role === "BoothWorker"
-            ? data = { ...req.body, clinicId: x.clinicId, password: generatedPassword, profile }
-            : data = { ...req.body, password: generatedPassword, profile }
+        let data = { ...req.body, password: generatedPassword, profile }
 
         const { isError, error } = customValidator(data, registerRules)
 
@@ -96,10 +92,6 @@ exports.createUser = asyncHandler(async (req, res, next) => {
         const hashPassword = await bcryptjs.hash(generatedPassword, 10)
 
         const result = await User.create({ ...data, password: hashPassword })
-
-        // if (result && result.role === "Clinic Admin") {
-        //     await Doctor.create({ clinic: clinicId, doctor: result._id })
-        // }
 
         const welcomeTemp = welcomeTemplate({ firstName, lastName, email, password: generatedPassword })
 

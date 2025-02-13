@@ -2,7 +2,6 @@ const mongoose = require("mongoose")
 
 
 const userSchema = new mongoose.Schema({
-    clinicId: { type: mongoose.Schema.Types.ObjectId, ref: "Clinic", required: true },
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
@@ -11,7 +10,7 @@ const userSchema = new mongoose.Schema({
     profile: { type: String, trim: true },
     role: {
         type: String,
-        enum: ['Super Admin', 'Admin', 'Booth Manager', 'Booth Worker'],
+        enum: ['Super Admin', 'Office Admin', 'Booth Manager', 'Booth Worker'],
         default: "Receptionist",
         required: true
     },
