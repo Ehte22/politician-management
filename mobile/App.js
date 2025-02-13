@@ -18,13 +18,13 @@ const App = () => {
     <Provider store={reduxStore}>
       <PaperProvider>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen options={{ headerShown: false }} name='Login' component={Login} />
-            <Stack.Screen options={{ headerShown: false }} name='Register' component={Register} />
-            <Stack.Screen options={{ headerShown: false }} name="VisitorDetails" component={VisitorDetails} />
-            <Stack.Screen options={{ headerShown: true }} name='Home' component={Home} />
-            <Stack.Screen options={{ headerShown: true }} name='Profile' component={Profile} />
-            <Stack.Screen options={{ headerShown: true, title: false, }} name='BottomTab' component={BottomTab} />
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Screen name='Register' component={Register} />
+            <Stack.Screen name="VisitorDetails" component={VisitorDetails} />
+            <Stack.Screen name='Home' component={Home} />
+            <Stack.Screen name='Profile' component={Profile} />
+            <Stack.Screen name='BottomTab' component={BottomTab} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

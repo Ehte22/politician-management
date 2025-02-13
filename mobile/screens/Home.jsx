@@ -1,30 +1,50 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native'
+import React, { useState } from 'react'
 import { visitors } from '../utils/dummyData'
-import { Button, MD2Colors } from 'react-native-paper'
+import { Appbar, Button, MD2Colors, Searchbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 
 
 
 const Home = () => {
-    const { navigate } = useNavigation()
+    const { navigate, goBack } = useNavigation()
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showSearch, setShowSearch] = useState(false);
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Visitor's List</Text>
-            <FlatList
-                data={visitors}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Text style={styles.name}>{item.name}</Text>
-                        <Text style={styles.info}>📞 {item.contact}</Text>
-                        <Text style={styles.info}>📧 {item.email}</Text>
-                        <Button onPress={() => navigate("VisitorDetails", { visitor: item })}> View Details</Button>
-                    </View>
+        <ScrollView>
+            <View style={{ position: "relative" }}>
+                <Appbar.Header>
+                    <Appbar.BackAction onPress={() => goBack()} />
+                    <Appbar.Content title="Visitor's" />
+                    <Appbar.Action icon="magnify" onPress={() => setShowSearch(!showSearch)} />
+                </Appbar.Header>
+
+            </View>
+            <View style={styles.container}>
+                {showSearch && (
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={setSearchQuery}
+                        value={searchQuery}
+                        style={styles.searchBar}
+                    />
                 )}
-                contentContainerStyle={{ paddingBottom: 20 }}
-            />
-        </View>
+                <Text style={styles.header}>Visitor's List</Text>
+                <FlatList
+                    data={visitors}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.card}>
+                            <Text style={styles.name}>{item.name}</Text>
+                            <Text style={styles.info}>📞 {item.contact}</Text>
+                            <Text style={styles.info}>📧 {item.email}</Text>
+                            <Button onPress={() => navigate("VisitorDetails", { visitor: item })}> View Details</Button>
+                        </View>
+                    )}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                />
+            </View>
+        </ScrollView>
     )
 }
 
