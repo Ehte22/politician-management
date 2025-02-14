@@ -36,7 +36,7 @@ exports.signIn = asyncHandler(async (req, res, next) => {
         return res.status(403).json({ message: "Your account has been deactivated. Contact support." });
     }
 
-    const token = generateToken({ userId: user._id, role: user.role })
+    const token = generateToken({ userId: user._id, role: user.role, boothId: user.boothId || "" })
 
     await User.findByIdAndUpdate(user._id, { sessionToken: token })
 
@@ -47,6 +47,7 @@ exports.signIn = asyncHandler(async (req, res, next) => {
         lastName: user.lastName,
         email: user.email,
         profile: user.profile,
+        phone: user.phone,
         role: user.role, token
     }
     res.status(200).json({ message: "Logged in successfully", result })

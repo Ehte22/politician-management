@@ -11,6 +11,7 @@ import reduxStore from './redux/store'
 import VisitorDetails from './screens/VisitorDetails'
 import BottomTab from './components/BottomTab'
 import Profile from './components/Profile'
+import UpdateVisitor from './components/UpdateVisitor'
 
 const App = () => {
   const Stack = createStackNavigator()
@@ -25,6 +26,7 @@ const App = () => {
             <Stack.Screen name='Home' component={Home} />
             <Stack.Screen name='Profile' component={Profile} />
             <Stack.Screen name='BottomTab' component={BottomTab} />
+            <Stack.Screen name='UpdateVisitor' component={UpdateVisitor} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

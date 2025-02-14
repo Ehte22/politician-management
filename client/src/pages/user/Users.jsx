@@ -4,6 +4,7 @@ import { useGetUsersQuery, useUpdateUserStatusMutation } from "../../redux/apis/
 import { toast } from "../../utils/toast";
 import TableData from "../../components/TableData";
 import Loader from "../../components/Loader";
+import { useGetBoothsQuery } from "../../redux/apis/booth.api";
 
 const columns = [
     {
@@ -24,17 +25,17 @@ const columns = [
         accessorKey: "phone",
         cell: (info) => info.getValue(),
     },
-    // {
-    //     header: "Clinic",
-    //     accessorKey: "clinicId",
-    //     cell: (info) => {
-    //         const row = info.row.original
-    //         const { data } = useGetClinicsQuery({ isFetchAll: true })
+    {
+        header: "Booth",
+        accessorKey: "boothId",
+        cell: (info) => {
+            const row = info.row.original
+            const { data } = useGetBoothsQuery({ isFetchAll: true })
 
-    //         const clinic = data?.result.find(item => item._id === row.clinicId)
-    //         return clinic?.name
-    //     },
-    // },
+            const booth = data?.result.find(item => item._id === row.boothId)
+            return booth?.name
+        },
+    },
     {
         header: "Role",
         accessorKey: "role",
@@ -104,11 +105,16 @@ const Users = () => {
     const navigate = useNavigate()
 
     // Queries and Mutations
-    const { data, isLoading } = useGetUsersQuery({
+    const { data, isLoading, refetch } = useGetUsersQuery({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
         searchQuery: searchQuery.toLowerCase()
     })
+
+    useEffect(() => {
+        refetch()
+    }, [])
+
 
     if (isLoading) {
         return <div className="flex justify-center items-center h-screen -mt-20">

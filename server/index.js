@@ -6,6 +6,7 @@ const passport = require("./services/passport.js")
 const authRouter = require("./routes/auth.routes.js")
 const userRouter = require("./routes/user.routes.js")
 const { protectedRoute } = require("./utils/protected.js")
+const boothRouter = require("./routes/booth.routes.js")
 
 const app = express()
 app.use(express.json())
@@ -20,12 +21,15 @@ app.use(passport.initialize())
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", protectedRoute, userRouter)
+app.use("/api/v1/booth", protectedRoute, boothRouter)
+app.use("/api/v1/visitor", require("./routes/visitor.routes.js"))
 
 app.use((req, res, next) => {
     res.status(404).json({ message: "Resource not found", });
 })
 
 app.use((err, req, res, next) => {
+    console.log(err)
     res.status(500).json({ message: "Something went wrong", error: err.message });
 })
 

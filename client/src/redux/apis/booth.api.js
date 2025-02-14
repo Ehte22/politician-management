@@ -1,28 +1,33 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createApi } from "@reduxjs/toolkit/query/react"
+import { createCustomBaseQuery } from "./customBaseQuery.api"
 
-export const visitorApi = createApi({
-    reducerPath: "visitorApi",
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/v1/visitor` }),
-    tagTypes: ["user"],
+const baseUrl = "http://localhost:5000/api/v1/booth"
+const customBaseQuery = createCustomBaseQuery(baseUrl)
+
+export const boothApi = createApi({
+    reducerPath: "boothApi",
+    baseQuery: customBaseQuery,
+    tagTypes: ["booth"],
     endpoints: (builder) => {
         return {
-            getAllVisitors: builder.query({
-                query: () => {
+            getBooths: builder.query({
+                query: (queryParams) => {
                     return {
                         url: "/",
                         method: "GET",
+                        params: queryParams
                     }
                 },
                 transformResponse: (data) => {
-                    return data.result
+                    return data
                 },
                 transformErrorResponse: (error) => {
-                    return error.data?.message
+                    return error.data.message
                 },
-                providesTags: ["user"]
+                providesTags: ["booth"]
             }),
 
-            getVisitorById: builder.query({
+            getBoothById: builder.query({
                 query: (id) => {
                     return {
                         url: `/${id}`,
@@ -30,20 +35,20 @@ export const visitorApi = createApi({
                     }
                 },
                 transformResponse: (data) => {
-                    return data
+                    return data.result
                 },
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                providesTags: ["user"]
+                providesTags: ["booth"]
             }),
 
-            createVisitor: builder.mutation({
-                query: visitorData => {
+            addBooth: builder.mutation({
+                query: boothData => {
                     return {
-                        url: "/create",
+                        url: "/add-booth",
                         method: "POST",
-                        body: visitorData
+                        body: boothData
                     }
                 },
                 transformResponse: (data) => {
@@ -52,15 +57,15 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                invalidatesTags: ["user"]
+                invalidatesTags: ["booth"]
             }),
 
-            updateVisitor: builder.mutation({
-                query: ({ visitorData, id }) => {
+            updateBooth: builder.mutation({
+                query: ({ id, boothData }) => {
                     return {
-                        url: `/update/${id}`,
+                        url: `/update-booth/${id}`,
                         method: "PUT",
-                        body: visitorData
+                        body: boothData
                     }
                 },
                 transformResponse: (data) => {
@@ -69,14 +74,14 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                invalidatesTags: ["user"]
+                invalidatesTags: ["booth"]
             }),
 
-            deleteVisitor: builder.mutation({
+            deleteBooth: builder.mutation({
                 query: (id) => {
                     return {
-                        url: `/${id}`,
-                        method: "DELETE",
+                        url: `/delete-booth/${id}`,
+                        method: "PUT",
                     }
                 },
                 transformResponse: (data) => {
@@ -85,7 +90,7 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                invalidatesTags: ["user"]
+                invalidatesTags: ["booth"]
             }),
 
         }
@@ -93,11 +98,9 @@ export const visitorApi = createApi({
 })
 
 export const {
-    useGetAllVisitorsQuery,
-    useLazyGetAllVisitorsQuery,
-    useGetVisitorByIdQuery,
-    useLazyGetVisitorByIdQuery,
-    useCreateVisitorMutation,
-    useUpdateVisitorMutation,
-    useDeleteVisitorMutation
-} = visitorApi
+    useGetBoothsQuery,
+    useGetBoothByIdQuery,
+    useAddBoothMutation,
+    useUpdateBoothMutation,
+    useDeleteBoothMutation
+} = boothApi

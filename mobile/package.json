@@ -16,6 +16,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "expo": "~52.0.33",
+    "expo-image-picker": "^16.0.6",
     "expo-localization": "~16.0.1",
     "expo-status-bar": "~2.0.1",
     "formik": "^2.4.6",

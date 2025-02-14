@@ -1,8 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createApi } from "@reduxjs/toolkit/query/react"
+import { createCustomBaseQuery } from "./customBaseQuery.api";
+
+const baseUrl = "http://localhost:5000/api/v1/visitor"
+const customBaseQuery = createCustomBaseQuery(baseUrl)
 
 export const visitorApi = createApi({
     reducerPath: "visitorApi",
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/v1/visitor` }),
+    baseQuery: customBaseQuery,
     tagTypes: ["user"],
     endpoints: (builder) => {
         return {
@@ -17,9 +21,9 @@ export const visitorApi = createApi({
                     return data.result
                 },
                 transformErrorResponse: (error) => {
-                    return error.data?.message
+                    return error.data.message
                 },
-                providesTags: ["user"]
+                providesTags: ["visitor"]
             }),
 
             getVisitorById: builder.query({
@@ -52,7 +56,7 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                invalidatesTags: ["user"]
+                invalidatesTags: ["visitor"]
             }),
 
             updateVisitor: builder.mutation({
@@ -76,7 +80,7 @@ export const visitorApi = createApi({
                 query: (id) => {
                     return {
                         url: `/${id}`,
-                        method: "DELETE",
+                        method: "PUT",
                     }
                 },
                 transformResponse: (data) => {
@@ -94,9 +98,7 @@ export const visitorApi = createApi({
 
 export const {
     useGetAllVisitorsQuery,
-    useLazyGetAllVisitorsQuery,
     useGetVisitorByIdQuery,
-    useLazyGetVisitorByIdQuery,
     useCreateVisitorMutation,
     useUpdateVisitorMutation,
     useDeleteVisitorMutation
