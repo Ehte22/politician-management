@@ -15,6 +15,8 @@ const Login = () => {
     const [snackbarVisible, setSnackbarVisible] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
+    const dispatch = useDispatch()
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -24,9 +26,9 @@ const Login = () => {
             email: yup.string().email("Invalid email").required("Email is Required"),
             password: yup.string().required("Password is Required"),
         }),
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             try {
-                await signIn(values).unwrap();
+                signIn(values)
             } catch (err) {
                 console.error("Login Failed:", err);
             }

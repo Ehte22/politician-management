@@ -118,7 +118,7 @@ const AddUser = () => {
 
     // Submit Function
     const onSubmit = (data) => {
-        const booth = boothData?.result?.find(item => item.name === data.boothId)
+        const booth = boothData?.result.find(item => item.name === data.boothId)
         const updatedData = { ...data, boothId: booth?._id }
 
         const formData = new FormData()
@@ -136,29 +136,29 @@ const AddUser = () => {
         if (id && userData) {
             const email = getValues("email")
 
-            updateUser({ userData: formData, id })
-            // if (email === userData.email) {
-            // } else {
-            //     toast.showError("Please verify your email address")
-            // }
+            if (email === userData.email) {
+                updateUser({ userData: formData, id })
+            } else {
+                toast.showError("Please verify your email address")
+            }
 
         } else {
-            createUser(formData)
-            // if (otpVerifySuccess) {
-            // } else {
-            //     toast.showError("Please verify your email address")
-            // }
+            if (otpVerifySuccess) {
+                createUser(formData)
+            } else {
+                toast.showError("Please verify your email address")
+            }
         }
     }
 
     // Dynamic Form Component
-    const { renderSingleInput, handleSubmit, getValues, disableField, setValue, watch, reset } =
+    const { renderSingleInput, handleSubmit, getValues, disableField, setValue, reset } =
         useDynamicForm({ schema, fields: updatedFields, onSubmit, defaultValues })
 
 
     useEffect(() => {
         if (getAllBoothSuccess && boothData) {
-            const booths = boothData?.result?.map((item) => ({
+            const booths = boothData?.result.map((item) => ({
                 label: item.name,
                 value: item.name
             }));
@@ -246,7 +246,7 @@ const AddUser = () => {
             setValue("role", userData.role || "")
 
             if (userData?.boothId) {
-                const booth = boothData?.result?.find(item => item._id === userData.boothId)
+                const booth = boothData?.result.find(item => item._id === userData.boothId)
                 if (booth) {
                     setValue("boothId", booth.name || "")
                 }

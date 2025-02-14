@@ -10,14 +10,14 @@ import useDynamicForm from '../components/useDynamicForm';
 import { useAddEventMutation, useUpdateEventMutation, useGetAllEventsQuery, useDeleteEventMutation } from '../redux/apis/event.api';
 
 const FullCalendarComponent = () => {
-  const [deleteEvent]= useDeleteEventMutation()
+  const [deleteEvent] = useDeleteEventMutation()
   const [addEvent] = useAddEventMutation();
   const [updateEvent] = useUpdateEventMutation();
   const { data } = useGetAllEventsQuery();
-// console.log("dataaa", data);
+  // console.log("dataaa", data);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null); 
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [clickedDate, setClickedDate] = useState(null);
 
   const handleDateClick = (arg) => {
@@ -33,8 +33,8 @@ const FullCalendarComponent = () => {
     });
     setIsOpen(true);
   };
-  
-  
+
+
 
   const handleEventClick = (clickInfo) => {
     const event = data.find(event => event._id === clickInfo.event.id);
@@ -53,8 +53,8 @@ const FullCalendarComponent = () => {
   };
 
   const fields = [
-    { name: "title", label: "Title", type: "text", rules: { required: true, min: 2, max: 16 } },
-    { name: "description", label: "Description", type: "text", rules: { required: true, min: 2, max: 50 } },
+    { name: "title", label: "Title", type: "text", rules: { required: true, min: 2, max: 100 } },
+    { name: "description", label: "Description", type: "text", rules: { required: true, min: 2, max: 500 } },
     { name: "startTime", label: "Start Time", type: "time", rules: { required: true } },
     { name: "endTime", label: "End Time", type: "time", rules: { required: true } },
     { name: "location", label: "Location", type: "text", rules: { required: true } },
@@ -68,17 +68,17 @@ const FullCalendarComponent = () => {
   //     console.error("No date selected!");
   //     return;
   //   }
-  
+
   //   try {
   //     // Combine clicked date with selected time
   //     const startDateTime = new Date(`${clickedDate}T${data.startTime}:00`);
   //     const endDateTime = new Date(`${clickedDate}T${data.endTime}:00`);
-  
+
   //     if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
   //       console.error("Invalid date/time values:", data.startTime, data.endTime);
   //       return; // Prevent submission if dates are invalid
   //     }
-  
+
   //     const eventData = {
   //       title: data.title,
   //       description: data.description,
@@ -87,13 +87,13 @@ const FullCalendarComponent = () => {
   //       location: data.location,
   //       organizer: data.organizer,
   //     };
-  
+
   //     if (selectedEvent?.id) {
   //       await updateEvent({ id: selectedEvent._id, ...eventData });
   //     } else {
   //       await addEvent(eventData);
   //     }
-  
+
   //     setIsOpen(false);
   //   } catch (error) {
   //     console.error("Error in onSubmit:", error);
@@ -102,22 +102,22 @@ const FullCalendarComponent = () => {
   const onSubmit = async (data) => {
     // If updating an event, use its existing date
     const eventDate = clickedDate || (selectedEvent?.startTime ? selectedEvent.startTime.split("T")[0] : null);
-  
+
     if (!eventDate) {
       console.error("No date selected!");
       return;
     }
-  
+
     try {
       // Combine the correct date with selected time
       const startDateTime = new Date(`${eventDate}T${data.startTime}:00`);
       const endDateTime = new Date(`${eventDate}T${data.endTime}:00`);
-  
+
       if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
         console.error("Invalid date/time values:", data.startTime, data.endTime);
         return; // Prevent submission if dates are invalid
       }
-  
+
       const eventData = {
         title: data.title,
         description: data.description,
@@ -126,22 +126,22 @@ const FullCalendarComponent = () => {
         location: data.location,
         organizer: data.organizer,
       };
-  
+
       if (selectedEvent?.id) {
-        await updateEvent({ id: selectedEvent.id, eventData :eventData });
+        await updateEvent({ id: selectedEvent.id, eventData: eventData });
       } else {
         await addEvent(eventData);
       }
-  
+
       setIsOpen(false);
     } catch (error) {
       console.error("Error in onSubmit:", error);
     }
   };
-  
 
-  const { renderSingleInput, handleSubmit, reset , setValue} = useDynamicForm({ schema, fields, onSubmit, defaultValues: {} });
-  useEffect (() => {
+
+  const { renderSingleInput, handleSubmit, reset, setValue } = useDynamicForm({ schema, fields, onSubmit, defaultValues: {} });
+  useEffect(() => {
     if (selectedEvent) {
       setValue("title", selectedEvent.title);
       setValue("description", selectedEvent.description);
@@ -179,29 +179,29 @@ const FullCalendarComponent = () => {
         selectable={true}
       />
 
-   
+
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="size-1">
         <DialogBackdrop className="fixed inset-0 blur-3xl bg-opacity-0 transition-opacity" />
         <div className="fixed inset-0 z-120 flex items-center justify-center">
         //       <DialogPanel className="bg-white rounded-xl shadow-lg max-w-lg w-full p-6 transition-all overflow-y-auto h-full">
-        <div className="flex justify-between items-center">
-  <DialogTitle className="text-xl font-semibold text-gray-900">
-    {selectedEvent?.id ? "Update Event" : "Add Event"}
-  </DialogTitle>
-  {selectedEvent?.id && (
-    <button
-      onClick={async () => {
-        console.log("============",selectedEvent);
-        
-        await deleteEvent(selectedEvent.id);
-        setIsOpen(false);
-      }}
-      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition"
-    >
-      Delete
-    </button>
-  )}
-</div>
+            <div className="flex justify-between items-center">
+              <DialogTitle className="text-xl font-semibold text-gray-900">
+                {selectedEvent?.id ? "Update Event" : "Add Event"}
+              </DialogTitle>
+              {selectedEvent?.id && (
+                <button
+                  onClick={async () => {
+                    console.log("============", selectedEvent);
+
+                    await deleteEvent(selectedEvent.id);
+                    setIsOpen(false);
+                  }}
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
 
 
             <form onSubmit={handleSubmit(onSubmit)} className="">

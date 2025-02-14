@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, ScrollView, RefreshControl, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, FlatList, RefreshControl, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Appbar, Button, MD2Colors, Searchbar, Snackbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -12,9 +12,11 @@ const Home = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const [GetAllVisitors, { data: visitors, isSuccess, isLoading, isError, error }] = useLazyGetAllVisitorsQuery();
+
     useEffect(() => {
-        GetAllVisitors()
-    }, [])
+        GetAllVisitors();
+    }, []);
+
     useEffect(() => {
         if (isSuccess) {
             setSnackbarMessage('Visitors loaded successfully');
@@ -27,57 +29,52 @@ const Home = () => {
     }, [isSuccess, isError]);
 
     return (
-        <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={GetAllVisitors} />}>
-            <View style={{ position: "relative" }}>
-                <Appbar.Header>
-                    <Appbar.BackAction onPress={() => goBack()} />
-                    <Appbar.Content title="Visitor's" />
-                    <Appbar.Action icon="magnify" onPress={() => setShowSearch(!showSearch)} />
-                </Appbar.Header>
-            </View>
-            <View style={styles.container}>
-                {showSearch && (
-                    <Searchbar
-                        placeholder="Search"
-                        onChangeText={setSearchQuery}
-                        value={searchQuery}
-                        style={styles.searchBar}
-                    />
-                )}
-                <Text style={styles.header}>Visitor's List</Text>
-                {visitors && visitors.length > 0 ? (
-                    <FlatList
-                        data={visitors}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => (
-                            <View style={styles.card}>
-                                <Text style={styles.name}>{item.name}</Text>
-                                <Text style={styles.info}>📞 {item.contact}</Text>
-                                <Text style={styles.info}>📧 {item.email}</Text>
-                                <Button mode='contained-tonal' onPress={() => navigate("VisitorDetails", { visitor: item })}> View Details</Button>
-                            </View>
-                        )}
-                        contentContainerStyle={{ paddingBottom: 20 }}
-                        onEndReachedThreshold={0.1}
-                        onEndReached={GetAllVisitors}
-                    />
-                ) : (
-                    <Text style={styles.noVisitorsText}>No visitors available</Text>
-                )}
+        <View style={styles.container}>
+            <Appbar.Header>
+                <Appbar.BackAction onPress={() => goBack()} />
+                <Appbar.Content title="Visitor's" />
+                <Appbar.Action icon="magnify" onPress={() => setShowSearch(!showSearch)} />
+            </Appbar.Header>
 
-                <View style={{ position: 'fixed', }}>
-                    <Snackbar
-                        style={{}}
-                        visible={snackbarVisible}
-                        onDismiss={() => setSnackbarVisible(false)}
-                        duration={9000}
-                    >
-                        {snackbarMessage}
-                    </Snackbar>
-                </View>
-            </View>
+            {showSearch && (
+                <Searchbar
+                    placeholder="Search"
+                    onChangeText={setSearchQuery}
+                    value={searchQuery}
+                    style={styles.searchBar}
+                />
+            )}
 
-        </ScrollView>
+            <Text style={styles.header}>Visitor's List</Text>
+
+            <FlatList
+                data={visitors}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.card}>
+                        <Text style={styles.name}>{item.name}</Text>
+                        <Text style={styles.info}>📞 {item.contact}</Text>
+                        <Text style={styles.info}>📧 {item.email}</Text>
+                        <Button mode='contained-tonal' onPress={() => navigate("VisitorDetails", { visitor: item })}>
+                            View Details
+                        </Button>
+                    </View>
+                )}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                refreshControl={<RefreshControl refreshing={isLoading} onRefresh={GetAllVisitors} />}
+                onEndReachedThreshold={0.1}
+                onEndReached={GetAllVisitors}
+                ListEmptyComponent={<Text style={styles.noVisitorsText}>No visitors available</Text>}
+            />
+
+            <Snackbar
+                visible={snackbarVisible}
+                onDismiss={() => setSnackbarVisible(false)}
+                duration={9000}
+            >
+                {snackbarMessage}
+            </Snackbar>
+        </View>
     );
 };
 
@@ -88,8 +85,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: MD2Colors.white,
         padding: 20,
-        position: "absolute",
-        width: Dimensions.get('screen').width
+        width: Dimensions.get('screen').width, // ✅ Adjusted width
     },
     header: {
         fontSize: 28,
@@ -104,7 +100,7 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 10,
         marginBottom: 15,
-        shadowColor: "#fff",
+        shadowColor: "#000", // ✅ Fixed shadow color
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 4,

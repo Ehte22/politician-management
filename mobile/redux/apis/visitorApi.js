@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 export const visitorApi = createApi({
     reducerPath: "visitorApi",
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/v1/visitor` }),
+    baseQuery: fetchBaseQuery({ baseUrl: `http://192.168.110.56:5000/api/v1/visitor` }),
     tagTypes: ["user"],
     endpoints: (builder) => {
         return {

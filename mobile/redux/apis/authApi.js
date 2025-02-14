@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/v1/auth`,
+        baseUrl: `http://192.168.110.56:5000/api/v1/auth`,
         prepareHeaders(headers, { getState }) {
             const state = getState();
             const token = state?.auth?.user?.token

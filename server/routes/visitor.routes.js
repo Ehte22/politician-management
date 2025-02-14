@@ -1,14 +1,14 @@
 
 const express = require("express");
 const { createVisitor, updateVisitor, getAllVisitors, getVisitorById, deleteVisitor } = require("../controllers/visit.controller");
-const router = express.Router();
+const visitorRouter = express.Router();
 const multerMiddleware = require("../utils/upload")
 
 const upload = multerMiddleware()
-router.post("/create", upload.single("problemDocuments"), createVisitor);
-router.put("/update/:id", upload.single("problemDocuments"), updateVisitor);
-router.get("/", getAllVisitors);
-router.get("/:id", getVisitorById);
-router.delete("/:id", deleteVisitor);
+visitorRouter.post("/create", upload.single("problemDocuments"), createVisitor);
+visitorRouter.put("/update/:id", upload.single("problemDocuments"), updateVisitor);
+visitorRouter.get("/", getAllVisitors);
+visitorRouter.get("/:id", getVisitorById);
+visitorRouter.delete("/:id", deleteVisitor);
 
-module.exports = router;
+module.exports = visitorRouter;
