@@ -1,8 +1,9 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text, Card, Avatar, List, Appbar, Searchbar } from "react-native-paper";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import { useLazyGetVisitorByIdQuery } from "../redux/apis/visitorApi";
 
 const VisitorDetails = () => {
     const route = useRoute();
@@ -10,7 +11,10 @@ const VisitorDetails = () => {
     const { visitor } = route.params;
     const [searchQuery, setSearchQuery] = useState('');
     const [showSearch, setShowSearch] = useState(false);
-
+    const [getVisitorDetails, { data, isSuccess, isError, isLoading, error }] = useLazyGetVisitorByIdQuery()
+    useEffect(() => {
+        getVisitorDetails(visitor)
+    }, [])
     return (
         <ScrollView>
             <View style={{ position: "relative" }}>

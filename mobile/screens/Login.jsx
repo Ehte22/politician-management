@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSignInMutation } from '../redux/authApi';
+import { useSignInMutation } from '../redux/apis/authApi';
 
 const Login = () => {
     const { navigate } = useNavigation();
