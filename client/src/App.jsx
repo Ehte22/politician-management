@@ -9,6 +9,8 @@ import Profile from "./pages/user/Profile"
 import Login from "./pages/Login"
 import ResetPassword from "./pages/ResetPassword"
 import ForgotPassword from "./pages/ForgotPassword"
+import AddBooth from "./pages/booth/AddBooth"
+import Booths from "./pages/booth/Booths"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -31,6 +33,10 @@ const App = () => {
             <Route path="/update-user/:id" element={<AddUser />} />
             <Route path="/profile/:id" element={<Profile />} />
 
+            {/* booth */}
+            <Route path="/booths" element={<Booths />} />
+            <Route path="/add-booth" element={<AddBooth />} />
+            <Route path="/update-booth/:id" element={<AddBooth />} />
           </Route>
 
           {/* auth */}

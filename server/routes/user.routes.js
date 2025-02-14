@@ -10,9 +10,9 @@ const userRouter = express.Router()
 userRouter
     .get("/", userController.getAllUsers)
     .get("/:id", userController.getUserById)
-    .post("/add-user", restrict(["Super Admin"]), upload.single("profile"), userController.createUser)
+    .post("/add-user", upload.single("profile"), userController.createUser)
     .put("/update-user/:id", upload.single("profile"), userController.updateUser)
-    .put("/update-status/:id", restrict(["Super Admin"]), userController.updateUserStatus)
-    .put("/delete-user/:id", restrict(["Super Admin"]), userController.deleteUser)
+    .put("/update-status/:id", userController.updateUserStatus)
+    .put("/delete-user/:id", userController.deleteUser)
 
 module.exports = userRouter
