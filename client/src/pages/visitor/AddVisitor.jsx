@@ -369,7 +369,7 @@ const AddVisitor = () => {
     useEffect(() => {
         if (id && vistor) {
             setValue("address", vistor.address)
-            setValue("age", vistor.age)
+            setValue("age", vistor.age.toString() || " ")
             setValue("contact", vistor.contact)
             setValue("email", vistor.email)
             setValue("name", vistor.name)

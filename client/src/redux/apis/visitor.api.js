@@ -7,7 +7,7 @@ const customBaseQuery = createCustomBaseQuery(baseUrl)
 export const visitorApi = createApi({
     reducerPath: "visitorApi",
     baseQuery: customBaseQuery,
-    tagTypes: ["user"],
+    tagTypes: ["visitor"],
     endpoints: (builder) => {
         return {
             getAllVisitors: builder.query({
@@ -39,7 +39,7 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                providesTags: ["user"]
+                providesTags: ["visitor"]
             }),
 
             createVisitor: builder.mutation({
@@ -73,7 +73,7 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                invalidatesTags: ["user"]
+                invalidatesTags: ["visitor"]
             }),
 
             deleteVisitor: builder.mutation({
@@ -89,7 +89,7 @@ export const visitorApi = createApi({
                 transformErrorResponse: (error) => {
                     return error.data.message
                 },
-                invalidatesTags: ["user"]
+                invalidatesTags: ["visitor"]
             }),
 
         }

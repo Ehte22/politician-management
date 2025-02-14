@@ -2,42 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import TableData from "../../components/TableData";
 import { format } from "date-fns";
-import { useGetAllVisitorsQuery } from "../../redux/apis/visitor.api";
-const columns = [
-    {
-        header: "Name",
-        accessorKey: "name",
-        cell: (info) => info.getValue(),
-    },
-    {
-        header: "Phone Number",
-        accessorKey: "contact",
-        cell: (info) => info.getValue(),
-    },
-    {
-        header: "email",
-        accessorKey: "email",
-        cell: (info) => info.getValue(),
-    },
+import { useDeleteVisitorMutation, useGetAllVisitorsQuery } from "../../redux/apis/visitor.api";
 
-
-    {
-        header: "Actions",
-        cell: (info) => {
-            const row = info.row.original;
-            const navigate = useNavigate()
-
-            return (
-                <button
-                    className="text-indigo-600 hover:text-indigo-900"
-                    onClick={() => navigate(`/update-visitor/${row._id}`)}
-                >
-                    Edit
-                </button>
-            );
-        },
-    },
-];
 
 const Visitor = () => {
 
@@ -46,9 +12,72 @@ const Visitor = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate()
 
+    const [deleteVisitor] = useDeleteVisitorMutation()
 
+    const handleDeleteAppointment = async (appointmentId) => {
+        if (confirm('Are you sure you want to delete this appointment?')) {
+            try {
+                await deleteVisitor(appointmentId).unwrap();
+                alert('Appointment deleted successfully!');
+            } catch (error) {
+                console.error('Error deleting appointment:', error);
+                alert('Failed to delete appointment.');
+            }
+        }
+    };
     const { data, isLoading, isSuccess } = useGetAllVisitorsQuery()
 
+    const columns = [
+        {
+            header: "Name",
+            accessorKey: "name",
+            cell: (info) => info.getValue(),
+        },
+        {
+            header: "Phone Number",
+            accessorKey: "contact",
+            cell: (info) => info.getValue(),
+        },
+        {
+            header: "email",
+            accessorKey: "email",
+            cell: (info) => info.getValue(),
+        },
+        {
+            header: "problemDescription",
+            accessorKey: "problemDescription",
+            cell: (info) => info.getValue(),
+        },
+        {
+            accessorKey: 'Delete',
+            cell: (info) => (
+                <button
+                    onClick={() => handleDeleteAppointment(info.row.original._id)}
+                    className="text-red-600 hover:text-red-800"
+                >
+                    Delete
+                </button>
+            ),
+            header: 'Delete',
+        },
+
+        {
+            header: "Actions",
+            cell: (info) => {
+                const row = info.row.original;
+                const navigate = useNavigate()
+
+                return (
+                    <button
+                        className="text-indigo-600 hover:text-indigo-900"
+                        onClick={() => navigate(`/update-visitor/${row._id}`)}
+                    >
+                        Edit
+                    </button>
+                );
+            },
+        },
+    ];
 
 
     // useEffect(() => {

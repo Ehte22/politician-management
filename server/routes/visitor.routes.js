@@ -9,6 +9,6 @@ router.post("/create", upload.single("problemDocuments"), createVisitor);
 router.put("/update/:id", upload.single("problemDocuments"), updateVisitor);
 router.get("/", getAllVisitors);
 router.get("/:id", getVisitorById);
-router.delete("/:id", deleteVisitor);
+router.put("/:id", deleteVisitor);
 
 module.exports = router;
