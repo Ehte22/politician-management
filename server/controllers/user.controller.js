@@ -16,9 +16,22 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     const pageLimit = parseInt(limit)
     const skip = (currentPage - 1) * pageLimit
 
+    const { role, boothId } = req.user
+
     const query = {
         $and: [
-            { role: { $ne: "Super Admin" } },
+            // { role: { $ne: "Office Admin" } },
+
+            role === "Office Admin"
+                ? {}
+                : role === "Booth Manager"
+                    ? { boothId: boothId }
+                    : {},
+            role === "Office Admin"
+                ? { role: { $nin: ["Office Admin"] } }
+                : role === "Booth Manager"
+                    ? { role: { $nin: ["Office Admin", "Booth Manager"] } }
+                    : {},
             searchQuery
                 ? {
                     $or: [
@@ -77,10 +90,8 @@ exports.createUser = asyncHandler(async (req, res, next) => {
         profile = secure_url
     }
 
-    if (role === "Office Admin" || role === "Booth Manager" || role === "Booth Worker") {
+    if (role === "Booth Manager" || role === "Booth Worker") {
         const generatedPassword = generatePassword(12)
-
-        const x = req.user
 
         let data = { ...req.body, password: generatedPassword, profile }
 

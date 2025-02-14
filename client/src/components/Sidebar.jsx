@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 const navigation = [
     { name: 'Dashboard', href: '/', icon: PlusCircleIcon, current: false },
     { name: 'Users', href: '/users', icon: PlusCircleIcon, current: false },
+    { name: 'Booths', href: '/booths', icon: PlusCircleIcon, current: false },
+    { name: 'Visitors', href: '/visitor', icon: PlusCircleIcon, current: false },
+    { name: 'Wishes', href: '/wish-table', icon: PlusCircleIcon, current: false },
     { name: 'Calender', href: '/calender', icon: PlusCircleIcon, current: false },
 ]
 

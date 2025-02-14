@@ -250,7 +250,7 @@ const Profile = () => {
                                                     <input
                                                         type="text"
                                                         placeholder="Enter OTP"
-                                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base  text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base  text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400  focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                                         onChange={(e) => setOTP(e.target.value)}
                                                     />
                                                 </div>
@@ -262,7 +262,7 @@ const Profile = () => {
                                                 <button
                                                     type="button"
                                                     onClick={otpSendSuccess ? verifyOTP : sendOTP}
-                                                    className="rounded-md bg-teal-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+                                                    className="rounded-md bg-teal-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                                                 >
                                                     Verify {otpSendSuccess ? "OTP" : "Email"}
                                                 </button>
@@ -282,12 +282,12 @@ const Profile = () => {
                 </div>
 
                 <div className="flex items-center justify-end gap-x-3 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-                    <button onClick={() => reset()} disabled={!isEditAble} type="button" className="rounded-md bg-gray-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <button onClick={() => reset()} disabled={!isEditAble} type="button" className="rounded-md bg-gray-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Save
                     </button>
