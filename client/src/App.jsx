@@ -13,6 +13,8 @@ import AddBooth from "./pages/booth/AddBooth"
 import Booths from "./pages/booth/Booths"
 import AddVisitor from "./pages/visitor/AddVisitor"
 import Visitor from "./pages/visitor/Visitor"
+import Wish from "./pages/Wish"
+import WishTable from "./table/wishTable"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -50,6 +52,10 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* wish */}
+          <Route path="/wish" element={<Wish />} />
+          <Route path="/wish/:id" element={<Wish />} />
+          <Route path="/wish-table" element={<WishTable />} />
 
         </Routes>
       </BrowserRouter >

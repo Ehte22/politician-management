@@ -6,7 +6,9 @@ const generateSchema = (fieldLabel, rules) => {
 
     if (Array.isArray(rules)) {
         schema = z.array(z.object(generateArrayOfObjectSchema(rules)))
-    } else if (rules.file) {
+        // } else if (rules.file) {
+    } else if (rules && rules.file) {
+
 
         schema = z.union([
             z.instanceof(File),
@@ -55,7 +57,8 @@ const generateSchema = (fieldLabel, rules) => {
                 message: `${fieldLabel} must be smaller than ${rules.maxSize}MB`,
             });
         }
-    } else if (rules.checkbox) {
+        // } else if (rules.checkbox) {
+    } else if (rules && rules.checkbox) {
         schema = z.union([
             z.array(z.string()),
             z.array(z.number()),
@@ -68,22 +71,24 @@ const generateSchema = (fieldLabel, rules) => {
             });
         }
     }
-    else if (rules.object) {
+    else if (rules && rules.object) {
         schema = z.object(generateObjectSchema(rules))
     }
     else {
         schema = z.string()
 
-        if (rules.required) {
+        if (rules && rules.required) {
             schema = schema.refine(
                 (value) => value !== undefined && value !== "",
-                { message: `Field ${fieldLabel} is required` }
+                {
+                    message: `Field ${fieldLabel} is required`
+                }
             );
         } else {
             schema = schema.optional();
         }
 
-        if (rules.email) {
+        if (rules && rules.email) {
             schema = schema.refine((value) => {
                 if (value) {
                     return z.string().email().safeParse(value).success
@@ -95,7 +100,7 @@ const generateSchema = (fieldLabel, rules) => {
             })
         }
 
-        if (rules.pattern) {
+        if (rules && rules.pattern) {
             schema = schema.refine((value) => {
                 if (value) {
                     return rules.pattern && rules.pattern.test(value)
@@ -107,7 +112,7 @@ const generateSchema = (fieldLabel, rules) => {
             })
         }
 
-        if (rules.min) {
+        if (rules && rules.min) {
             schema = schema.refine((value) => {
                 if (value) {
                     return rules.min && (value.length >= rules.min)
@@ -119,7 +124,7 @@ const generateSchema = (fieldLabel, rules) => {
             })
         }
 
-        if (rules.max) {
+        if (rules && rules.max) {
             schema = schema.refine((value) => {
                 if (value) {
                     return rules.max && (value.length <= rules.max)
@@ -133,7 +138,7 @@ const generateSchema = (fieldLabel, rules) => {
 
     }
     return schema;
-};
+}
 
 const generateArrayOfObjectSchema = (rules) => {
     const schemaObj = {};
