@@ -5,9 +5,6 @@ const asyncHandler = require("express-async-handler");
 const Wish = require("../models/Wish");
 const sendEmail = require("../utils/email");
 
-
-
-
 exports.createWish = asyncHandler(async (req, res) => {
     const { name, date, contact, email, type, message, category } = req.body;
     console.log(req.body);

@@ -165,8 +165,6 @@ const AddBooth = () => {
                         <div className="sm:col-span-3 xl:col-span-2">
                             {renderSingleInput("location")}
                         </div>
-
-
                     </div>
                 </div>
 

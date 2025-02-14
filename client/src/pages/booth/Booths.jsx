@@ -29,11 +29,6 @@ const columns = [
         accessorKey: "capacity",
         cell: (info) => info.getValue(),
     },
-    // {
-    //     header: "Location",
-    //     accessorKey: "location",
-    //     cell: (info) => info.getValue(),
-    // },
 
     {
         header: "Location",

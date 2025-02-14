@@ -6,6 +6,7 @@ const navigation = [
     { name: 'Users', href: '/users', icon: PlusCircleIcon, current: false },
     { name: 'Booths', href: '/booths', icon: PlusCircleIcon, current: false },
     { name: 'Visitors', href: '/visitor', icon: PlusCircleIcon, current: false },
+    { name: 'Wishes', href: '/wish-table', icon: PlusCircleIcon, current: false },
 ]
 
 const Sidebar = ({ toggleSidebar, userData }) => {

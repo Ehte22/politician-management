@@ -1,14 +1,11 @@
 import { z } from "zod"
 
 const generateSchema = (fieldLabel, rules) => {
-
     let schema
 
     if (Array.isArray(rules)) {
         schema = z.array(z.object(generateArrayOfObjectSchema(rules)))
-        // } else if (rules.file) {
-    } else if (rules && rules.file) {
-
+    } else if (rules?.file) {
 
         schema = z.union([
             z.instanceof(File),
@@ -16,7 +13,7 @@ const generateSchema = (fieldLabel, rules) => {
             z.string(),
         ]);
 
-        if (rules.required) {
+        if (rules?.required) {
             schema = schema.refine((files) => {
                 if (files instanceof FileList) {
                     return files.length > 0;
@@ -27,7 +24,7 @@ const generateSchema = (fieldLabel, rules) => {
             });
         }
 
-        if (rules.accept) {
+        if (rules?.accept) {
             schema = schema.refine((files) => {
                 if (files instanceof FileList && files.length > 0) {
                     return Array.from(files).every((file) =>
@@ -43,7 +40,7 @@ const generateSchema = (fieldLabel, rules) => {
             });
         }
 
-        if (rules.maxSize) {
+        if (rules?.maxSize) {
             const sizeInBytes = rules.maxSize * 1024 * 1024;
             schema = schema.refine((files) => {
                 if (files instanceof FileList && files.length > 0) {
@@ -57,27 +54,26 @@ const generateSchema = (fieldLabel, rules) => {
                 message: `${fieldLabel} must be smaller than ${rules.maxSize}MB`,
             });
         }
-        // } else if (rules.checkbox) {
-    } else if (rules && rules.checkbox) {
+    } else if (rules?.checkbox) {
         schema = z.union([
             z.array(z.string()),
             z.array(z.number()),
             z.string(),
         ]);
 
-        if (rules.required) {
+        if (rules?.required) {
             schema = schema.refine((values) => values.length > 0, {
                 message: `${fieldLabel} is required`,
             });
         }
     }
-    else if (rules && rules.object) {
+    else if (rules?.object) {
         schema = z.object(generateObjectSchema(rules))
     }
     else {
         schema = z.string()
 
-        if (rules && rules.required) {
+        if (rules?.required) {
             schema = schema.refine(
                 (value) => value !== undefined && value !== "",
                 {
@@ -88,7 +84,7 @@ const generateSchema = (fieldLabel, rules) => {
             schema = schema.optional();
         }
 
-        if (rules && rules.email) {
+        if (rules?.email) {
             schema = schema.refine((value) => {
                 if (value) {
                     return z.string().email().safeParse(value).success
@@ -100,7 +96,7 @@ const generateSchema = (fieldLabel, rules) => {
             })
         }
 
-        if (rules && rules.pattern) {
+        if (rules?.pattern) {
             schema = schema.refine((value) => {
                 if (value) {
                     return rules.pattern && rules.pattern.test(value)
@@ -112,7 +108,7 @@ const generateSchema = (fieldLabel, rules) => {
             })
         }
 
-        if (rules && rules.min) {
+        if (rules?.min) {
             schema = schema.refine((value) => {
                 if (value) {
                     return rules.min && (value.length >= rules.min)
@@ -124,7 +120,7 @@ const generateSchema = (fieldLabel, rules) => {
             })
         }
 
-        if (rules && rules.max) {
+        if (rules?.max) {
             schema = schema.refine((value) => {
                 if (value) {
                     return rules.max && (value.length <= rules.max)

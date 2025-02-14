@@ -15,6 +15,7 @@ import AddVisitor from "./pages/visitor/AddVisitor"
 import Visitor from "./pages/visitor/Visitor"
 import Wish from "./pages/Wish"
 import WishTable from "./table/wishTable"
+import GoogleTranslate from "./components/GoogleTranslate"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -23,6 +24,8 @@ export const ImagePreviewContext = createContext({
 
 const App = () => {
   const [previewImages, setPreviewImages] = useState([])
+
+  return <GoogleTranslate />
 
   return <>
     <ImagePreviewContext.Provider value={{ previewImages, setPreviewImages }}>
@@ -46,16 +49,18 @@ const App = () => {
             <Route path="/add-visitor" element={<AddVisitor />} />
             <Route path="/update-visitor/:id" element={<AddVisitor />} />
             <Route path="/visitor" element={<Visitor />} />
+
+            {/* wish */}
+            <Route path="/wish" element={<Wish />} />
+            <Route path="/wish/:id" element={<Wish />} />
+            <Route path="/wish-table" element={<WishTable />} />
           </Route>
 
           {/* auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* wish */}
-          <Route path="/wish" element={<Wish />} />
-          <Route path="/wish/:id" element={<Wish />} />
-          <Route path="/wish-table" element={<WishTable />} />
+
 
         </Routes>
       </BrowserRouter >
