@@ -118,8 +118,8 @@ const AddUser = () => {
 
     // Submit Function
     const onSubmit = (data) => {
-        const booth = boothData.result.find(item => item.name === data.boothId)
-        const updatedData = { ...data, boothId: booth._id }
+        const booth = boothData?.result?.find(item => item.name === data.boothId)
+        const updatedData = { ...data, boothId: booth?._id }
 
         const formData = new FormData()
 
@@ -158,7 +158,7 @@ const AddUser = () => {
 
     useEffect(() => {
         if (getAllBoothSuccess && boothData) {
-            const booths = boothData.result.map((item) => ({
+            const booths = boothData?.result?.map((item) => ({
                 label: item.name,
                 value: item.name
             }));
@@ -246,8 +246,7 @@ const AddUser = () => {
             setValue("role", userData.role || "")
 
             if (userData?.boothId) {
-                const booth = boothData?.result.find(item => item._id === userData.boothId)
-
+                const booth = boothData?.result?.find(item => item._id === userData.boothId)
                 if (booth) {
                     setValue("boothId", booth.name || "")
                 }

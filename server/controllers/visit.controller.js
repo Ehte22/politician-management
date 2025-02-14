@@ -37,10 +37,10 @@ exports.createVisitor = asyncHandler(async (req, res) => {
         }
 
         const newVisitor = new Visitor({
+            // idProof: documents["idProof"],
             name: req.body.name,
             email: req.body.email,
             contact: req.body.contact,
-            // idProof: documents["idProof"],
             address: req.body.address,
             gender: req.body.gender,
             age: req.body.age,
@@ -82,7 +82,6 @@ exports.createVisitor = asyncHandler(async (req, res) => {
     }
 });
 
-
 exports.updateVisitor = asyncHandler(async (req, res) => {
 
 
@@ -107,6 +106,8 @@ exports.updateVisitor = asyncHandler(async (req, res) => {
         //         documents[key] = secure_url;
         //     }
         // }
+        console.log(req.body, "Req.body");
+        console.log(req.file, "Req.File");
 
         const visitor = await Visitor.findById(id)
         let problemDocuments
@@ -170,21 +171,10 @@ exports.updateVisitor = asyncHandler(async (req, res) => {
 
 });
 
-
-
-
-
-
-
-
-
-
-
 exports.getAllVisitors = asyncHandler(async (req, res) => {
     const result = await Visitor.find({ isDeleted: false });
     res.status(200).json({ message: "all Visitor Fetch success,", result });
 });
-
 
 exports.getVisitorById = asyncHandler(async (req, res) => {
     const result = await Visitor.findById(req.params.id);
@@ -199,6 +189,9 @@ exports.getVisitorById = asyncHandler(async (req, res) => {
 
 exports.deleteVisitor = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    if (!id) {
+        return res.status(404).json({ message: "Visitor ID not found" });
+    }
     const result = await Visitor.findByIdAndUpdate(id, { isDeleted: true });
     if (!result) {
         return res.status(404).json({ message: "Visitor not found" });
