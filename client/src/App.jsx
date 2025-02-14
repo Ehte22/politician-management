@@ -13,6 +13,8 @@ import AddBooth from "./pages/booth/AddBooth"
 import Booths from "./pages/booth/Booths"
 import AddVisitor from "./pages/visitor/AddVisitor"
 import Visitor from "./pages/visitor/Visitor"
+import Wish from "./pages/Wish"
+import WishTable from "./table/wishTable"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -31,9 +33,6 @@ const App = () => {
             <Route index element={<AdminDashBoard />} />
             {/* user */}
             <Route path="/users" element={<Users />} />
-            <Route path="/add-visitor" element={<AddVisitor />} />
-            <Route path="/update-visitor/:id" element={<AddVisitor />} />
-            <Route path="/visitor" element={<Visitor />} />
             <Route path="/add-user" element={<AddUser />} />
             <Route path="/update-user/:id" element={<AddUser />} />
             <Route path="/profile/:id" element={<Profile />} />
@@ -42,12 +41,21 @@ const App = () => {
             <Route path="/booths" element={<Booths />} />
             <Route path="/add-booth" element={<AddBooth />} />
             <Route path="/update-booth/:id" element={<AddBooth />} />
+
+            {/* Visitor */}
+            <Route path="/add-visitor" element={<AddVisitor />} />
+            <Route path="/update-visitor/:id" element={<AddVisitor />} />
+            <Route path="/visitor" element={<Visitor />} />
           </Route>
 
           {/* auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* wish */}
+          <Route path="/wish" element={<Wish />} />
+          <Route path="/wish/:id" element={<Wish />} />
+          <Route path="/wish-table" element={<WishTable />} />
 
         </Routes>
       </BrowserRouter >

@@ -5,6 +5,7 @@ require("dotenv").config({ path: "./.env" })
 const passport = require("./services/passport.js")
 const authRouter = require("./routes/auth.routes.js")
 const userRouter = require("./routes/user.routes.js")
+const wishRoutes = require("./routes/wish.routes.js")
 const { protectedRoute } = require("./utils/protected.js")
 const boothRouter = require("./routes/booth.routes.js")
 
@@ -23,6 +24,7 @@ app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", protectedRoute, userRouter)
 app.use("/api/v1/booth", protectedRoute, boothRouter)
 app.use("/api/v1/visitor", require("./routes/visitor.routes.js"))
+app.use("/api/v1/wish", wishRoutes)
 
 app.use((req, res, next) => {
     res.status(404).json({ message: "Resource not found", });

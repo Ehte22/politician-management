@@ -59,7 +59,6 @@ const defaultValues = {
 const AddVisitor = () => {
     const [addvisitor, { isSuccess: addsuccess, isError: addIsError, error: adderror }] = useCreateVisitorMutation()
     const { id } = useParams()
-    console.log(id);
 
     const { data: vistor } = useGetVisitorByIdQuery(id)
 
@@ -407,7 +406,6 @@ const AddVisitor = () => {
     }, [vistor])
 
     return <>
-        <pre>{JSON.stringify(errors, null, 2)}</pre>
         <div className="grid grid-cols-1 gap-x-8 gap-y-8">
             <div className="flex justify-between">
                 <h2 className="text-lg font-bold text-gray-900">{id ? "Update Visitor" : "Add Visitor"}</h2>
