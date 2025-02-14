@@ -11,6 +11,8 @@ import ResetPassword from "./pages/ResetPassword"
 import ForgotPassword from "./pages/ForgotPassword"
 import AddBooth from "./pages/booth/AddBooth"
 import Booths from "./pages/booth/Booths"
+import AddVisitor from "./pages/visitor/AddVisitor"
+import Visitor from "./pages/visitor/Visitor"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -29,6 +31,9 @@ const App = () => {
             <Route index element={<AdminDashBoard />} />
             {/* user */}
             <Route path="/users" element={<Users />} />
+            <Route path="/add-visitor" element={<AddVisitor />} />
+            <Route path="/update-visitor/:id" element={<AddVisitor />} />
+            <Route path="/visitor" element={<Visitor />} />
             <Route path="/add-user" element={<AddUser />} />
             <Route path="/update-user/:id" element={<AddUser />} />
             <Route path="/profile/:id" element={<Profile />} />
