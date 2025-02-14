@@ -31,9 +31,6 @@ const App = () => {
             <Route index element={<AdminDashBoard />} />
             {/* user */}
             <Route path="/users" element={<Users />} />
-            <Route path="/add-visitor" element={<AddVisitor />} />
-            <Route path="/update-visitor/:id" element={<AddVisitor />} />
-            <Route path="/visitor" element={<Visitor />} />
             <Route path="/add-user" element={<AddUser />} />
             <Route path="/update-user/:id" element={<AddUser />} />
             <Route path="/profile/:id" element={<Profile />} />
@@ -42,6 +39,11 @@ const App = () => {
             <Route path="/booths" element={<Booths />} />
             <Route path="/add-booth" element={<AddBooth />} />
             <Route path="/update-booth/:id" element={<AddBooth />} />
+
+            {/* Visitor */}
+            <Route path="/add-visitor" element={<AddVisitor />} />
+            <Route path="/update-visitor/:id" element={<AddVisitor />} />
+            <Route path="/visitor" element={<Visitor />} />
           </Route>
 
           {/* auth */}
