@@ -9,6 +9,7 @@ import Profile from "./pages/user/Profile"
 import Login from "./pages/Login"
 import ResetPassword from "./pages/ResetPassword"
 import ForgotPassword from "./pages/ForgotPassword"
+import FullCalender from "./pages/FullCalender"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -27,6 +28,7 @@ const App = () => {
             <Route index element={<AdminDashBoard />} />
             {/* user */}
             <Route path="/users" element={<Users />} />
+            <Route path="/calender" element={<FullCalender />} />
             <Route path="/add-user" element={<AddUser />} />
             <Route path="/update-user/:id" element={<AddUser />} />
             <Route path="/profile/:id" element={<Profile />} />

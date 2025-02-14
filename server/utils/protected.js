@@ -1,5 +1,5 @@
 const { User } = require("../models/User")
-
+const passport = require("../services/passport")
 exports.protectedRoute = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, async (err, user, info) => {
 
