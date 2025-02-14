@@ -20,6 +20,7 @@ app.use(passport.initialize())
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", protectedRoute, userRouter)
+app.use("/api/v1/visitor", require("./routes/visitor.routes.js"))
 
 app.use((req, res, next) => {
     res.status(404).json({ message: "Resource not found", });
