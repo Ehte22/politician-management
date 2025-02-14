@@ -8,6 +8,7 @@ const userRouter = require("./routes/user.routes.js")
 const wishRoutes = require("./routes/wish.routes.js")
 const { protectedRoute } = require("./utils/protected.js")
 const boothRouter = require("./routes/booth.routes.js")
+const calenderRouter = require("./routes/calender.routes.js")
 
 const app = express()
 app.use(express.json())
@@ -21,6 +22,7 @@ app.use(cors({
 app.use(passport.initialize())
 
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/event", calenderRouter )
 app.use("/api/v1/user", protectedRoute, userRouter)
 app.use("/api/v1/booth", protectedRoute, boothRouter)
 app.use("/api/v1/visitor", require("./routes/visitor.routes.js"))

@@ -9,6 +9,7 @@ import Profile from "./pages/user/Profile"
 import Login from "./pages/Login"
 import ResetPassword from "./pages/ResetPassword"
 import ForgotPassword from "./pages/ForgotPassword"
+import FullCalender from "./pages/FullCalender"
 import AddBooth from "./pages/booth/AddBooth"
 import Booths from "./pages/booth/Booths"
 import AddVisitor from "./pages/visitor/AddVisitor"
@@ -25,7 +26,7 @@ export const ImagePreviewContext = createContext({
 const App = () => {
   const [previewImages, setPreviewImages] = useState([])
 
-  return <GoogleTranslate />
+  // return <GoogleTranslate />
 
   return <>
     <ImagePreviewContext.Provider value={{ previewImages, setPreviewImages }}>
@@ -36,6 +37,7 @@ const App = () => {
             <Route index element={<AdminDashBoard />} />
             {/* user */}
             <Route path="/users" element={<Users />} />
+            <Route path="/calender" element={<FullCalender />} />
             <Route path="/add-user" element={<AddUser />} />
             <Route path="/update-user/:id" element={<AddUser />} />
             <Route path="/profile/:id" element={<Profile />} />

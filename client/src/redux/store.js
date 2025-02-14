@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "./apis/auth.api";
 import { userApi } from "./apis/user.api";
 import authSlice from "./slices/auth.slice"
+import { eventApi } from "./apis/event.api";
 import { boothApi } from "./apis/booth.api";
 import { visitorApi } from "./apis/visitor.api";
 import { wishApi } from "./apis/wish.api";
@@ -14,6 +15,7 @@ const reduxStore = configureStore({
                 [boothApi.reducerPath]: boothApi.reducer,
                 [visitorApi.reducerPath]: visitorApi.reducer,
                 [wishApi.reducerPath]: wishApi.reducer,
+                [eventApi.reducerPath]: eventApi.reducer,
 
                 auth: authSlice
         },
@@ -23,7 +25,8 @@ const reduxStore = configureStore({
                         userApi.middleware,
                         boothApi.middleware,
                         visitorApi.middleware,
-                        wishApi.middleware
+                        wishApi.middleware,
+                        eventApi.middleware
 
                 )
 })
