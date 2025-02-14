@@ -7,8 +7,7 @@ import { toast } from '../utils/toast'
 
 const userNavigation = [
     { name: 'Your Profile', href: '/profile' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#', },
+    { name: 'Sign out', href: '', },
 ]
 
 

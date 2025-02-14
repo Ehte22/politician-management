@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { createCustomBaseQuery } from "./customBaseQuery.api";
 
-const baseUrl = "http://localhost:5000/api/v1/event"
+const baseUrl = `${import.meta.env.VITE_BACKEND_URL}/api/v1/event`
 const customBaseQuery = createCustomBaseQuery(baseUrl)
 
 export const eventApi = createApi({
@@ -21,7 +21,7 @@ export const eventApi = createApi({
                 transformResponse: (data) => {
                     return data.result
                 },
-   
+
                 providesTags: ["event"]
             }),
 
@@ -52,7 +52,7 @@ export const eventApi = createApi({
             deleteEvent: builder.mutation({
                 query: (id) => {
                     console.log("ooooo", id);
-                    
+
                     return {
                         url: `/delete-event/${id}`,
                         method: "DELETE",
@@ -67,8 +67,8 @@ export const eventApi = createApi({
 })
 
 export const {
- useGetAllEventsQuery,
- useAddEventMutation,
- useUpdateEventMutation,
- useDeleteEventMutation
+    useGetAllEventsQuery,
+    useAddEventMutation,
+    useUpdateEventMutation,
+    useDeleteEventMutation
 } = eventApi

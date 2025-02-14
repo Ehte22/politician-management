@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { logoutUser, openSessionExpiredModal } from "../slices/auth.slice";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v1/auth",
+    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth`,
     credentials: "include",
     prepareHeaders(headers, { getState }) {
         const state = getState()

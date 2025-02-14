@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { createCustomBaseQuery } from "./customBaseQuery.api"
 
-const baseUrl = "http://localhost:5000/api/v1/booth"
+const baseUrl = `${import.meta.env.VITE_BACKEND_URL}/api/v1/booth`
 const customBaseQuery = createCustomBaseQuery(baseUrl)
 
 export const boothApi = createApi({

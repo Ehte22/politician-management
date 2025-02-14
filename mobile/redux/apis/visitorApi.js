@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createCustomBaseQuery } from "./customBaseQuery.api"
+
+const customBaseQuery = createCustomBaseQuery(`https://politician-management-server.vercel.app/api/v1/visitor`)
 
 export const visitorApi = createApi({
     reducerPath: "visitorApi",
-    baseQuery: fetchBaseQuery({ baseUrl: `http://192.168.110.56:5000/api/v1/visitor` }),
+    baseQuery: customBaseQuery,
     tagTypes: ["user"],
     endpoints: (builder) => {
         return {

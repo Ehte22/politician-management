@@ -17,6 +17,7 @@ import Visitor from "./pages/visitor/Visitor"
 import Wish from "./pages/Wish"
 import WishTable from "./table/wishTable"
 import GoogleTranslate from "./components/GoogleTranslate"
+import Protected from "./components/Protected"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -33,29 +34,32 @@ const App = () => {
       <BrowserRouter>
         <SessionExpiredModal />
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<AdminDashBoard />} />
-            {/* user */}
-            <Route path="/users" element={<Users />} />
-            <Route path="/calender" element={<FullCalender />} />
-            <Route path="/add-user" element={<AddUser />} />
-            <Route path="/update-user/:id" element={<AddUser />} />
-            <Route path="/profile/:id" element={<Profile />} />
 
-            {/* booth */}
-            <Route path="/booths" element={<Booths />} />
-            <Route path="/add-booth" element={<AddBooth />} />
-            <Route path="/update-booth/:id" element={<AddBooth />} />
+          <Route element={<Protected />}>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<AdminDashBoard />} />
+              {/* user */}
+              <Route path="/users" element={<Users />} />
+              <Route path="/calender" element={<FullCalender />} />
+              <Route path="/add-user" element={<AddUser />} />
+              <Route path="/update-user/:id" element={<AddUser />} />
+              <Route path="/profile/:id" element={<Profile />} />
 
-            {/* Visitor */}
-            <Route path="/add-visitor" element={<AddVisitor />} />
-            <Route path="/update-visitor/:id" element={<AddVisitor />} />
-            <Route path="/visitor" element={<Visitor />} />
+              {/* booth */}
+              <Route path="/booths" element={<Booths />} />
+              <Route path="/add-booth" element={<AddBooth />} />
+              <Route path="/update-booth/:id" element={<AddBooth />} />
 
-            {/* wish */}
-            <Route path="/wish" element={<Wish />} />
-            <Route path="/wish/:id" element={<Wish />} />
-            <Route path="/wish-table" element={<WishTable />} />
+              {/* Visitor */}
+              <Route path="/add-visitor" element={<AddVisitor />} />
+              <Route path="/update-visitor/:id" element={<AddVisitor />} />
+              <Route path="/visitor" element={<Visitor />} />
+
+              {/* wish */}
+              <Route path="/wish" element={<Wish />} />
+              <Route path="/wish/:id" element={<Wish />} />
+              <Route path="/wish-table" element={<WishTable />} />
+            </Route>
           </Route>
 
           {/* auth */}
