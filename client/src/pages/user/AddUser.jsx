@@ -52,9 +52,8 @@ const fields = [
         type: "select",
         options: [
             { label: "Select Role", value: "", disabled: true },
-            { label: "Clinic Admin", value: "Clinic Admin" },
-            { label: "Doctor", value: "Doctor" },
-            { label: "Receptionist", value: "Receptionist" }
+            { label: "Booth Manager", value: "Booth Manager" },
+            { label: "Booth Worker", value: "Booth Worker" }
         ],
         rules: { required: true }
     },
@@ -114,23 +113,16 @@ const AddUser = () => {
 
     // Submit Function
     const onSubmit = (data) => {
-        const clinic = clinicData?.result?.find(item => item.name === data.clinicId)
-
-        let updatedData = data
-
-        if (data.role !== "Receptionist") {
-            updatedData = { ...data, clinicId: clinic?._id }
-        }
 
         const formData = new FormData()
 
-        Object.keys(updatedData).forEach(key => {
-            if (key === "profile" && typeof updatedData[key] == "object") {
-                Object.keys(updatedData.profile).forEach(item => {
-                    formData.append(key, updatedData.profile[item])
+        Object.keys(data).forEach(key => {
+            if (key === "profile" && typeof data[key] == "object") {
+                Object.keys(data.profile).forEach(item => {
+                    formData.append(key, data.profile[item])
                 })
             } else {
-                formData.append(key, updatedData[key])
+                formData.append(key, data[key])
             }
         })
 
@@ -342,6 +334,7 @@ const AddUser = () => {
                         </div>
                     </div>
                 </div>
+
 
                 <div className="flex items-center justify-end gap-x-3 border-t border-gray-900/10 px-4 py-4 sm:px-8">
                     {
