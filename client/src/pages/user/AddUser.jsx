@@ -9,6 +9,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useCreateUserMutation, useGetUserByIdQuery, useUpdateUserMutation } from "../../redux/apis/user.api"
 import { ImagePreviewContext } from "../../App"
 import Loader from "../../components/Loader"
+import { useGetBoothsQuery } from "../../redux/apis/booth.api"
+import { useSelector } from "react-redux"
 
 const fields = [
     {
@@ -46,17 +48,17 @@ const fields = [
         rules: { required: false, file: true }
     },
 
-    {
-        name: "role",
-        label: "Role",
-        type: "select",
-        options: [
-            { label: "Select Role", value: "", disabled: true },
-            { label: "Booth Manager", value: "Booth Manager" },
-            { label: "Booth Worker", value: "Booth Worker" }
-        ],
-        rules: { required: true }
-    },
+    // {
+    //     name: "role",
+    //     label: "Role",
+    //     type: "select",
+    //     options: [
+    //         { label: "Select Role", value: "", disabled: true },
+    //         { label: "Booth Manager", value: "Booth Manager" },
+    //         { label: "Booth Worker", value: "Booth Worker" }
+    //     ],
+    //     rules: { required: true }
+    // },
 
 
 ]
@@ -68,10 +70,12 @@ const defaultValues = {
     phone: "",
     role: "",
     profile: "",
-    clinicId: ""
+    boothId: ""
 }
 
 const AddUser = () => {
+
+    const { user } = useSelector(state => state.auth)
 
     // hooks
     const navigate = useNavigate()
@@ -87,10 +91,11 @@ const AddUser = () => {
     const [updateUser, { data: updateUserMessage, isLoading: updateUserLoading, error: updateUserErrorMessage, isSuccess: updateUserSuccess, isError: updateUserError }] = useUpdateUserMutation()
     const [sendOtp, { data: otpSendMessage, isLoading: isSendOtpLoading, error: otpSendErrorMessage, isSuccess: otpSendSuccess, isError: otpSendError }] = useSendOTPMutation()
     const [verifyOtp, { data: otpVerifyMessage, isLoading: isVerifyOtpLoading, error: otpVerifyErrorMessage, isSuccess: otpVerifySuccess, isError: otpVerifyError }] = useVerifyOTPMutation()
-    // const { data: clinicData, isSuccess: getClinicsSuccess } = useGetClinicsQuery({ isFetchAll: true })
+    const { data: boothData, isSuccess: getAllBoothSuccess } = useGetBoothsQuery({ isFetchAll: true })
     const { data: userData } = useGetUserByIdQuery(id || "", {
         skip: !id
     })
+
 
     // Function for send OTP
     const sendOTP = () => {
@@ -113,34 +118,36 @@ const AddUser = () => {
 
     // Submit Function
     const onSubmit = (data) => {
+        const booth = boothData.result.find(item => item.name === data.boothId)
+        const updatedData = { ...data, boothId: booth._id }
 
         const formData = new FormData()
 
-        Object.keys(data).forEach(key => {
-            if (key === "profile" && typeof data[key] == "object") {
-                Object.keys(data.profile).forEach(item => {
-                    formData.append(key, data.profile[item])
+        Object.keys(updatedData).forEach(key => {
+            if (key === "profile" && typeof updatedData[key] == "object") {
+                Object.keys(updatedData.profile).forEach(item => {
+                    formData.append(key, updatedData.profile[item])
                 })
             } else {
-                formData.append(key, data[key])
+                formData.append(key, updatedData[key])
             }
         })
 
         if (id && userData) {
             const email = getValues("email")
 
-            if (email === userData.email) {
-                updateUser({ userData: formData, id })
-            } else {
-                toast.showError("Please verify your email address")
-            }
+            updateUser({ userData: formData, id })
+            // if (email === userData.email) {
+            // } else {
+            //     toast.showError("Please verify your email address")
+            // }
 
         } else {
-            if (otpVerifySuccess) {
-                createUser(formData)
-            } else {
-                toast.showError("Please verify your email address")
-            }
+            createUser(formData)
+            // if (otpVerifySuccess) {
+            // } else {
+            //     toast.showError("Please verify your email address")
+            // }
         }
     }
 
@@ -148,32 +155,47 @@ const AddUser = () => {
     const { renderSingleInput, handleSubmit, getValues, disableField, setValue, watch, reset } =
         useDynamicForm({ schema, fields: updatedFields, onSubmit, defaultValues })
 
-    // const values = watch();
 
-    // useEffect(() => {
-    //     if (getClinicsSuccess && clinicData && (values.role === "Clinic Admin" || values.role === "Doctor")) {
-    //         const clinics = clinicData.result.map((item) => ({
-    //             label: item.name,
-    //             value: item.name
-    //         }));
+    useEffect(() => {
+        if (getAllBoothSuccess && boothData) {
+            const booths = boothData.result.map((item) => ({
+                label: item.name,
+                value: item.name
+            }));
 
-    //         setUpdatedFields([
-    //             ...fields,
-    //             {
-    //                 name: "clinicId",
-    //                 label: "Clinic",
-    //                 type: "searchSelect",
-    //                 options: [
-    //                     { label: "Select Clinic", value: "", disabled: true },
-    //                     ...clinics
-    //                 ],
-    //                 rules: { required: true }
-    //             }
-    //         ]);
-    //     } else {
-    //         setUpdatedFields(fields.filter((field) => field.name !== "clinicId"));
-    //     }
-    // }, [clinicData, getClinicsSuccess, fields, values.role]);
+            setUpdatedFields([
+                ...fields,
+                {
+                    name: "role",
+                    label: "Role",
+                    type: "select",
+                    options: user?.role === "Booth Manager"
+                        ? [
+                            { label: "Select Role", value: "", disabled: true },
+                            { label: "Booth Worker", value: "Booth Worker" }
+                        ]
+                        : [
+                            { label: "Select Role", value: "", disabled: true },
+                            { label: "Booth Manager", value: "Booth Manager" },
+                            { label: "Booth Worker", value: "Booth Worker" }
+                        ],
+                    rules: { required: true }
+                },
+                {
+                    name: "boothId",
+                    label: "Booth",
+                    type: "searchSelect",
+                    options: [
+                        { label: "Select Booth", value: "", disabled: true },
+                        ...booths
+                    ],
+                    rules: { required: true }
+                }
+            ]);
+        } else {
+            setUpdatedFields(fields.filter((field) => field.name !== "boothId"));
+        }
+    }, [boothData, getAllBoothSuccess, fields, user]);
 
 
     useEffect(() => {
@@ -223,10 +245,13 @@ const AddUser = () => {
             setValue("phone", userData.phone?.toString() || "")
             setValue("role", userData.role || "")
 
-            // if (userData.clinicId) {
-            //     const clinic = clinicData?.result.find(item => item._id === userData.clinicId)
-            //     setValue("clinicId", clinic?.name || "")
-            // }
+            if (userData?.boothId) {
+                const booth = boothData?.result.find(item => item._id === userData.boothId)
+
+                if (booth) {
+                    setValue("boothId", booth.name || "")
+                }
+            }
 
 
             if (userData.profile) {
@@ -234,7 +259,7 @@ const AddUser = () => {
                 setPreviewImages([userData.profile])
             }
         }
-    }, [id, userData,])
+    }, [id, userData, boothData])
 
     return <>
         <div className="grid grid-cols-1 gap-x-8 gap-y-8">
@@ -323,9 +348,9 @@ const AddUser = () => {
                             {renderSingleInput("role")}
                         </div>
 
-                        {/* Clinic */}
+                        {/* booth */}
                         <div className="sm:col-span-3 xl:col-span-2">
-                            {renderSingleInput("clinicId")}
+                            {renderSingleInput("boothId")}
                         </div>
 
                         {/* Profile */}

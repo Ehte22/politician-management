@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 const navigation = [
     { name: 'Dashboard', href: '/', icon: PlusCircleIcon, current: false },
     { name: 'Users', href: '/users', icon: PlusCircleIcon, current: false },
+    { name: 'Booths', href: '/booths', icon: PlusCircleIcon, current: false },
 ]
 
 const Sidebar = ({ toggleSidebar, userData }) => {
