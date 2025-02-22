@@ -8,29 +8,32 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { customValidator } from '../utils/validator';
 import useDynamicForm from '../components/useDynamicForm';
 import { useAddEventMutation, useUpdateEventMutation, useGetAllEventsQuery, useDeleteEventMutation } from '../redux/apis/event.api';
+import TimePicker from '../components/TimePicker';
 
 const FullCalendarComponent = () => {
   const [deleteEvent] = useDeleteEventMutation()
   const [addEvent] = useAddEventMutation();
   const [updateEvent] = useUpdateEventMutation();
   const { data } = useGetAllEventsQuery();
-  // console.log("dataaa", data);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [clickedDate, setClickedDate] = useState(null);
+  const [openSlotModal, setOpenSlotModal] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
   const handleDateClick = (arg) => {
-    setClickedDate(arg.date.toISOString().split("T")[0]); // Store only the date part
-    setSelectedEvent({
-      id: null,
-      title: '',
-      description: '',
-      startTime: '',
-      endTime: '',
-      location: '',
-      organizer: '',
-    });
+    setClickedDate(arg.dateStr);
+    // setSelectedEvent({
+    //   id: null,
+    //   title: '',
+    //   description: '',
+    //   startTime: '',
+    //   endTime: '',
+    //   location: '',
+    //   organizer: '',
+    // });
     setIsOpen(true);
   };
 
@@ -55,8 +58,8 @@ const FullCalendarComponent = () => {
   const fields = [
     { name: "title", label: "Title", type: "text", rules: { required: true, min: 2, max: 100 } },
     { name: "description", label: "Description", type: "text", rules: { required: true, min: 2, max: 500 } },
-    { name: "startTime", label: "Start Time", type: "time", rules: { required: true } },
-    { name: "endTime", label: "End Time", type: "time", rules: { required: true } },
+    // { name: "startTime", label: "Start Time", type: "time", rules: { required: true } },
+    // { name: "endTime", label: "End Time", type: "time", rules: { required: true } },
     { name: "location", label: "Location", type: "text", rules: { required: true } },
     { name: "organizer", label: "Organizer", type: "text", rules: { required: true } }
   ];
@@ -101,28 +104,30 @@ const FullCalendarComponent = () => {
   // };
   const onSubmit = async (data) => {
     // If updating an event, use its existing date
-    const eventDate = clickedDate || (selectedEvent?.startTime ? selectedEvent.startTime.split("T")[0] : null);
+    // const eventDate = clickedDate || (selectedEvent?.startTime ? selectedEvent.startTime.split("T")[0] : null);
 
-    if (!eventDate) {
-      console.error("No date selected!");
-      return;
-    }
+    // if (!eventDate) {
+    //   console.error("No date selected!");
+    //   return;
+    // }
 
     try {
       // Combine the correct date with selected time
-      const startDateTime = new Date(`${eventDate}T${data.startTime}:00`);
-      const endDateTime = new Date(`${eventDate}T${data.endTime}:00`);
+      // const startDateTime = new Date(`${eventDate}T${data.startTime}:00`);
+      // const endDateTime = new Date(`${eventDate}T${data.endTime}:00`);
 
-      if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
-        console.error("Invalid date/time values:", data.startTime, data.endTime);
-        return; // Prevent submission if dates are invalid
-      }
+      // if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
+      //   console.error("Invalid date/time values:", data.startTime, data.endTime);
+      //   return; // Prevent submission if dates are invalid
+      // }
 
       const eventData = {
         title: data.title,
         description: data.description,
-        startTime: startDateTime.toISOString(),
-        endTime: endDateTime.toISOString(),
+        // startTime: startDateTime.toISOString(),
+        // endTime: endDateTime.toISOString(),
+        startTime,
+        endTime,
         location: data.location,
         organizer: data.organizer,
       };
@@ -151,7 +156,7 @@ const FullCalendarComponent = () => {
       setValue("organizer", selectedEvent.organizer);
     }
   }, [selectedEvent, setValue]);
-  return (
+  return <>
     <div className="p-6 bg-blue-50 min-h-screen">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
@@ -180,10 +185,10 @@ const FullCalendarComponent = () => {
       />
 
 
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="size-1">
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="size-1 ">
         <DialogBackdrop className="fixed inset-0 blur-3xl bg-opacity-0 transition-opacity" />
-        <div className="fixed inset-0 z-120 flex items-center justify-center">
-        //       <DialogPanel className="bg-white rounded-xl shadow-lg max-w-lg w-full p-6 transition-all overflow-y-auto h-full">
+        <div className="fixed inset-0 z-10 flex items-center justify-center">
+          <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95">
             <div className="flex justify-between items-center">
               <DialogTitle className="text-xl font-semibold text-gray-900">
                 {selectedEvent?.id ? "Update Event" : "Add Event"}
@@ -191,7 +196,6 @@ const FullCalendarComponent = () => {
               {selectedEvent?.id && (
                 <button
                   onClick={async () => {
-                    console.log("============", selectedEvent);
 
                     await deleteEvent(selectedEvent.id);
                     setIsOpen(false);
@@ -212,6 +216,11 @@ const FullCalendarComponent = () => {
               <div>{renderSingleInput("location")}</div>
               <div>{renderSingleInput("organizer")}</div>
 
+              <button
+                type='button'
+                className="mt-5 rounded-md cursor-pointer bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() => setOpenSlotModal(true)} >select slot</button>
+
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   type="button"
@@ -230,9 +239,18 @@ const FullCalendarComponent = () => {
             </form>
           </DialogPanel>
         </div>
-      </Dialog>
-    </div>
-  );
+      </Dialog >
+
+      {/* Time Picker */}
+      < TimePicker
+        openSlotModal={openSlotModal}
+        setOpenSlotModal={setOpenSlotModal}
+        selectedDate={clickedDate}
+        setStart={setStartTime}
+        setEnd={setEndTime}
+      />
+    </div >
+  </>
 };
 
 export default FullCalendarComponent;

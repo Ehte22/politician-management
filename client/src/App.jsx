@@ -18,6 +18,8 @@ import Wish from "./pages/Wish"
 import WishTable from "./table/wishTable"
 import GoogleTranslate from "./components/GoogleTranslate"
 import Protected from "./components/Protected"
+import Home from "./test/Home"
+import TimePicker from "./components/TimePicker"
 
 export const ImagePreviewContext = createContext({
   previewImages: [],
@@ -27,7 +29,7 @@ export const ImagePreviewContext = createContext({
 const App = () => {
   const [previewImages, setPreviewImages] = useState([])
 
-  // return <GoogleTranslate />
+  // return <TimePicker />
 
   return <>
     <ImagePreviewContext.Provider value={{ previewImages, setPreviewImages }}>
@@ -39,6 +41,7 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<AdminDashBoard />} />
               {/* user */}
+              <Route path="/home" element={<Home />} />
               <Route path="/users" element={<Users />} />
               <Route path="/calender" element={<FullCalender />} />
               <Route path="/add-user" element={<AddUser />} />
